@@ -52,3 +52,4 @@ This project is configured for automatic deployment to GitHub Pages. Push to the
 ## Live Demo
 
 [Dialing Innovations on GitHub Pages](https://rintu-chowdory.github.io/dialing-innovations/)
+# Build Status\nAutomatically deploying to GitHub Pages
