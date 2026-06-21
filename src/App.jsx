@@ -1,31 +1,49 @@
-import React from 'react'
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import React, { useState } from 'react'
 import Sidebar from './components/Sidebar'
-import Softphone from './components/Softphone'
 import Dashboard from './pages/Dashboard'
-import CallHistory from './pages/CallHistory'
-import Messaging from './pages/Messaging'
-import Leads from './pages/Leads'
-import Voicemails from './pages/Voicemails'
+import CallLogs from './pages/CallLogs'
+import Contacts from './pages/Contacts'
+import Voicemail from './pages/Voicemail'
+import Analytics from './pages/Analytics'
 import Settings from './pages/Settings'
+import Datenschutz from './pages/Datenschutz'
+import Header from './components/Header'
 
 export default function App() {
+  const [activePage, setActivePage] = useState('dashboard')
+
+  const renderPage = () => {
+    switch (activePage) {
+      case 'dashboard':
+        return <Dashboard />
+      case 'call-logs':
+        return <CallLogs />
+      case 'contacts':
+        return <Contacts />
+      case 'voicemail':
+        return <Voicemail />
+      case 'analytics':
+        return <Analytics />
+      case 'settings':
+        return <Settings />
+      case 'datenschutz':
+        return <Datenschutz />
+      default:
+        return <Dashboard />
+    }
+  }
+
   return (
-    <HashRouter>
-      <div className="flex h-screen overflow-hidden bg-[#0d1420]">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/call-history" element={<CallHistory />} />
-            <Route path="/messaging" element={<Messaging />} />
-            <Route path="/leads" element={<Leads />} />
-            <Route path="/voicemails" element={<Voicemails />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
+    <div className="flex h-screen bg-black">
+      <Sidebar activePage={activePage} setActivePage={setActivePage} />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header />
+        <main className="flex-1 overflow-auto">
+          <div className="p-6">
+            {renderPage()}
+          </div>
         </main>
-        <Softphone />
       </div>
-    </HashRouter>
+    </div>
   )
 }
