@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import Sidebar from './components/Sidebar'
 import Dashboard from './pages/Dashboard'
-import CallLogs from './pages/CallLogs'
-import Contacts from './pages/Contacts'
-import Voicemail from './pages/Voicemail'
-import Analytics from './pages/Analytics'
+import CallHistory from './pages/CallHistory'
+import Leads from './pages/Leads'
+import Voicemails from './pages/Voicemails'
+import Messaging from './pages/Messaging'
 import Settings from './pages/Settings'
 import Datenschutz from './pages/Datenschutz'
 import Impressum from './pages/Impressum'
-import Header from './components/Header'
 
 export default function App() {
   const [activePage, setActivePage] = useState('dashboard')
@@ -18,13 +17,13 @@ export default function App() {
       case 'dashboard':
         return <Dashboard />
       case 'call-logs':
-        return <CallLogs />
+        return <CallHistory />
       case 'contacts':
-        return <Contacts />
+        return <Leads />
       case 'voicemail':
-        return <Voicemail />
+        return <Voicemails />
       case 'analytics':
-        return <Analytics />
+        return <Messaging />
       case 'settings':
         return <Settings />
       case 'datenschutz':
@@ -40,7 +39,6 @@ export default function App() {
     <div className="flex h-screen bg-black">
       <Sidebar activePage={activePage} setActivePage={setActivePage} />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header />
         <main className="flex-1 overflow-auto">
           <div className="p-6">
             {renderPage()}
