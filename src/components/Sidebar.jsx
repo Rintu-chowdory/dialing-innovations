@@ -1,68 +1,70 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
-import { Link } from 'react-router-dom'
-import { LayoutDashboard, Phone, MessageSquare, Users, Mail, Settings, LogOut } from 'lucide-react'
+import { Phone, FileText, Users, MessageSquare, BarChart3, Settings, Lock } from 'lucide-react'
 
-export default function Sidebar() {
-  const location = useLocation()
-
-  const navItems = [
-    { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/call-history', label: 'Call History', icon: Phone },
-    { path: '/messaging', label: 'Messaging', icon: MessageSquare },
-    { path: '/leads', label: 'Leads', icon: Users },
-    { path: '/voicemails', label: 'Voicemails', icon: Mail },
-    { path: '/settings', label: 'Settings', icon: Settings },
+export default function Sidebar({ activePage, setActivePage }) {
+  const menuItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: Phone },
+    { id: 'call-logs', label: 'Call Logs', icon: FileText },
+    { id: 'contacts', label: 'Contacts', icon: Users },
+    { id: 'voicemail', label: 'Voicemail', icon: MessageSquare },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
   ]
 
-  const isActive = (path) => location.pathname === path
+  const bottomItems = [
+    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'datenschutz', label: 'Datenschutz', icon: Lock },
+  ]
 
   return (
-    <div className="w-52 bg-[#0a1020] border-r border-[#1a2535] flex flex-col h-screen">
-      {/* Logo */}
-      <div className="p-4 border-b border-[#1a2535]">
-        <div className="flex items-center gap-2 mb-2">
-          <Phone className="w-6 h-6 text-[#f97316]" />
-          <div className="text-sm font-semibold">
-            <span className="text-[#f97316]">DIALING</span>
-            <br />
-            <span className="text-white">INNOVATIONS</span>
-          </div>
-        </div>
+    <div className="w-64 bg-black border-r border-gray-800 p-6 flex flex-col">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <Phone className="w-8 h-8 text-blue-600" />
+          <span>Dialing</span>
+        </h1>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
-        {navItems.map((item) => {
-          const Icon = item.icon
-          const active = isActive(item.path)
+      <nav className="flex-1 space-y-2">
+        {menuItems.map((item) => {
+          const IconComponent = item.icon
+          const isActive = activePage === item.id
           return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
-                active
-                  ? 'bg-[#f97316] text-white'
-                  : 'text-gray-300 hover:bg-[#111827]'
+            <button
+              key={item.id}
+              onClick={() => setActivePage(item.id)}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                isActive
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-900'
               }`}
             >
-              <Icon className="w-5 h-5" />
-              <span className="text-sm font-medium">{item.label}</span>
-            </Link>
+              <IconComponent className="w-5 h-5" />
+              <span className="font-medium">{item.label}</span>
+            </button>
           )
         })}
       </nav>
 
-      {/* User Footer */}
-      <div className="p-4 border-t border-[#1a2535]">
-        <div className="mb-3">
-          <p className="text-sm font-medium text-white">Rintu Chowdory</p>
-          <p className="text-xs text-gray-400">User</p>
-        </div>
-        <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-[#111827] rounded-lg transition-colors">
-          <LogOut className="w-4 h-4" />
-          Logout
-        </button>
+      <div className="pt-6 border-t border-gray-800 space-y-2">
+        {bottomItems.map((item) => {
+          const IconComponent = item.icon
+          const isActive = activePage === item.id
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActivePage(item.id)}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                isActive
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-900'
+              }`}
+            >
+              <IconComponent className="w-5 h-5" />
+              <span className="font-medium">{item.label}</span>
+            </button>
+          )
+        })}
+        <p className="text-xs text-gray-500 pt-4">© 2024 Dialing Innovations</p>
       </div>
     </div>
   )
