@@ -7,6 +7,7 @@ import Voicemail from './pages/Voicemail'
 import Analytics from './pages/Analytics'
 import Settings from './pages/Settings'
 import Datenschutz from './pages/Datenschutz'
+import Impressum from './pages/Impressum'
 import Header from './components/Header'
 
 export default function App() {
@@ -28,6 +29,8 @@ export default function App() {
         return <Settings />
       case 'datenschutz':
         return <Datenschutz />
+      case 'impressum':
+        return <Impressum />
       default:
         return <Dashboard />
     }
