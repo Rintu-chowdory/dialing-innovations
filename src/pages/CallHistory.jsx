@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { calls } from '../data/mock'
+import { api, useDataSource } from '../api/client'
 import { Download, RotateCw, Search, PhoneIncoming, PhoneOutgoing } from 'lucide-react'
 
 const statusStyle = {
@@ -8,13 +9,15 @@ const statusStyle = {
 const statusLabel = { completed: 'Completed', missed: 'Missed', voicemail: 'Voicemail' }
 
 export default function CallHistory() {
+  const callsLoader = useCallback(() => api.getJson('/api/calls?per_page=200').then((r) => r.calls), [])
+  const { data: allCalls } = useDataSource(callsLoader, calls)
   const [search, setSearch] = useState('')
   const [direction, setDirection] = useState('all')
   const [status, setStatus] = useState('all')
   const [page, setPage] = useState(0)
   const perPage = 8
   
-  const filtered = useMemo(() => calls.filter((c) => {
+  const filtered = useMemo(() => allCalls.filter((c) => {
     const q = search.toLowerCase()
     const match = !q || c.from.toLowerCase().includes(q) || c.agent.toLowerCase().includes(q) || c.to.toLowerCase().includes(q)
     return match && (direction === 'all' || c.direction === direction) && (status === 'all' || c.status === status)

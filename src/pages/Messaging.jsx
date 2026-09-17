@@ -1,25 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Search, Send, Paperclip, Smile } from 'lucide-react'
 import { Avatar } from '../components/ui'
-import { conversations, messages } from '../data/mock'
+import { conversations, messages as mockMessages } from '../data/mock'
+import { api, useDataSource } from '../api/client'
 
 export default function Messaging() {
   const [activeId, setActiveId] = useState('c1')
   const [draft, setDraft] = useState('')
-  const [thread, setThread] = useState(messages)
-  const active = conversations.find((c) => c.id === activeId)
+  const [localThread, setLocalThread] = useState(null)
+
+  const threadsLoader = useCallback(() => api.getJson('/api/threads'), [])
+  const messagesLoader = useCallback(
+    () => api.getJson(`/api/threads/${activeId}/messages`), [activeId])
+
+  const { data: conversationsList, source } = useDataSource(threadsLoader, conversations)
+  const { data: fetchedThread } = useDataSource(messagesLoader, null)
+
+  // Reset local overrides when switching conversation
+  useEffect(() => { setLocalThread(null) }, [activeId])
+
+  const active = conversationsList.find((c) => c.id === activeId) || conversationsList[0]
+  const thread = localThread || fetchedThread || mockMessages
 
   const send = () => {
-    if (!draft.trim()) return
-    setThread([...thread, { id: Date.now(), from: 'me', text: draft.trim(), time: '09:40' }])
+    const text = draft.trim()
+    if (!text) return
     setDraft('')
+    const optimistic = { id: Date.now(), from: 'me', text, time: '09:40' }
+    const updated = [...thread, optimistic]
+    setLocalThread(updated)
+    if (source === 'live') {
+      api.postJson(`/api/threads/${activeId}/messages`, { text })
+        .then(() => {}) // optimistic update already shown
+        .catch(() => {}) // keep optimistic message on failure
+    }
   }
 
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-2xl font-extrabold tracking-tight">Messaging</h1>
-        <p className="text-sm text-gray-500 mt-0.5">3 unread · SMS & web chat in one inbox</p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-extrabold tracking-tight">Messaging</h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {conversationsList.reduce((n, c) => n + (c.unread || 0), 0)} unread · SMS & web chat in one inbox
+          </p>
+        </div>
+        <span className={`pill ${source === 'live' ? 'pill-success' : 'pill-muted'}`}>
+          {source === 'live' ? 'Live API' : source === 'loading' ? 'Connecting…' : 'Demo data'}
+        </span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-220px)] min-h-[480px]">
@@ -29,7 +57,7 @@ export default function Messaging() {
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input className="input !pl-10 !py-2" placeholder="Search conversations…" />
           </div>
-          {conversations.map((c) => (
+          {conversationsList.map((c) => (
             <button key={c.id} onClick={() => setActiveId(c.id)}
               className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-colors ${
                 activeId === c.id ? 'bg-accent/15 border border-accent/30' : 'hover:bg-surface2 border border-transparent'}`}>

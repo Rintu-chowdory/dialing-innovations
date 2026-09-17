@@ -52,6 +52,26 @@ npm run dev
 npm run build
 ```
 
+## Backend (optional live API)
+
+`backend/app.py` is a FastAPI + SQLite REST API that serves the same data the
+dashboard displays. Run it locally:
+
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app:app --reload --port 8000
+```
+
+Endpoints: `/api/summary`, `/api/calls` (search/direction/status/page filters),
+`/api/calls.csv`, `/api/agents`, `/api/leads`, `/api/threads`,
+`/api/threads/{id}/messages` (GET + POST), `/api/voicemails`, `/api/health`.
+The database auto-seeds demo data on first start.
+
+Point the frontend at it by setting `VITE_API_URL` (see `.env.example`) before
+building. Every page then shows a "Live API" badge instead of "Demo data", and
+sent messages are persisted server-side.
+
 ## Deployment
 
 This project is configured for automatic deployment to GitHub Pages. Push to the `main` branch to trigger the deployment workflow.

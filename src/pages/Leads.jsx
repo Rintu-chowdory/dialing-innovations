@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Users, Building2, MapPin, ArrowUpRight } from 'lucide-react'
 import { Section } from '../components/ui'
-import { leads } from '../data/mock'
+import { leads as mockLeads } from '../data/mock'
+import { api, useDataSource } from '../api/client'
 
 const stages = [
   { id: 'new', label: 'New', color: '#6366f1' },
@@ -19,6 +20,8 @@ const pipeline = [
 ]
 
 export default function Leads() {
+  const leadsLoader = useCallback(() => api.getJson('/api/leads'), [])
+  const { data: leads } = useDataSource(leadsLoader, mockLeads)
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">

@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Play, Pause, PhoneIncoming, Trash2, CheckCheck } from 'lucide-react'
 import { Section } from '../components/ui'
-import { voicemails } from '../data/mock'
+import { voicemails as mockVoicemails } from '../data/mock'
+import { api, useDataSource } from '../api/client'
 
 export default function Voicemails() {
+  const vmLoader = useCallback(() => api.getJson('/api/voicemails'), [])
+  const { data: voicemails } = useDataSource(vmLoader, mockVoicemails)
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">

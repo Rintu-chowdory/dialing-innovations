@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Phone, Plug, Users, Bell, Shield, Globe } from 'lucide-react'
 import { Avatar, Section } from '../components/ui'
-import { agents } from '../data/mock'
+import { agents as mockAgents } from '../data/mock'
+import { api, useDataSource } from '../api/client'
 
 const integrations = [
   { id: 'twilio', name: 'Twilio', desc: 'SIP trunk & phone numbers', color: '#f87147', on: true },
@@ -20,6 +21,8 @@ function Toggle({ on, onClick }) {
 }
 
 export default function Settings() {
+  const agentsLoader = useCallback(() => api.getJson('/api/agents'), [])
+  const { data: agents } = useDataSource(agentsLoader, mockAgents)
   const [toggles, setToggles] = useState(Object.fromEntries(integrations.map((i) => [i.id, i.on])))
   const flip = (id) => setToggles((t) => ({ ...t, [id]: !t[id] }))
 

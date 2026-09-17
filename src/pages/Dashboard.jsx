@@ -1,7 +1,9 @@
 import React from 'react'
 import { Phone, CheckCircle, XCircle, Clock, ArrowUpRight, PhoneIncoming, PhoneMissed, Voicemail } from 'lucide-react'
 import { StatCard, BarChart, Ring, Section, Avatar, Sparkline } from '../components/ui'
+import { useCallback } from 'react'
 import { agents, calls, hourlyVolume } from '../data/mock'
+import { api, useDataSource } from '../api/client'
 
 const statusPill = {
   completed: <span className="pill pill-success">Completed</span>,
@@ -10,6 +12,15 @@ const statusPill = {
 }
 
 export default function Dashboard() {
+  const callsLoader = useCallback(() => api.getJson('/api/calls?per_page=50').then((r) => r.calls), [])
+  const agentsLoader = useCallback(() => api.getJson('/api/agents'), [])
+  const summaryLoader = useCallback(() => api.getJson('/api/summary'), [])
+
+  const { data: liveCalls, source } = useDataSource(callsLoader, calls)
+  const { data: liveAgents } = useDataSource(agentsLoader, agents)
+  const { data: summary } = useDataSource(summaryLoader, null)
+  const hourly = summary?.hourly || hourlyVolume
+
   return (
     <div className="space-y-6">
       {/* Hero */}
@@ -21,6 +32,9 @@ export default function Dashboard() {
               Good morning, <span className="gradient-text">Sabine</span> 👋
             </h1>
             <p className="text-gray-400 text-sm mt-1">Your team is handling <span className="text-white font-semibold">14 calls</span> right now — everything is green.</p>
+            <span className={`mt-3 inline-flex pill ${source === 'live' ? 'pill-success' : 'pill-muted'}`}>
+              {source === 'live' ? 'Live API' : source === 'loading' ? 'Connecting…' : 'Demo data'}
+            </span>
           </div>
           <div className="flex gap-1 bg-surface2 border border-line rounded-xl p-1">
             {['Today', '7d', '30d'].map((t, i) => (
@@ -47,7 +61,7 @@ export default function Dashboard() {
           className="xl:col-span-2"
           action={<span className="pill pill-accent"><ArrowUpRight className="w-3.5 h-3.5" /> +9.1% vs. yesterday</span>}
         >
-          <BarChart data={hourlyVolume} />
+          <BarChart data={hourly} />
         </Section>
 
         <Section title="Service Level">
@@ -82,7 +96,7 @@ export default function Dashboard() {
           action={<span className="text-xs text-accent-soft font-medium cursor-pointer hover:underline">View all →</span>}
         >
           <div className="divide-y divide-line/60">
-            {calls.slice(0, 6).map((c) => (
+            {liveCalls.slice(0, 6).map((c) => (
               <div key={c.id} className="flex items-center gap-4 py-3">
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
                   c.status === 'missed' ? 'bg-danger/10 text-danger'
@@ -108,7 +122,7 @@ export default function Dashboard() {
 
         <Section title="Agent Leaderboard">
           <div className="space-y-1">
-            {agents.slice(0, 4).map((a, i) => (
+            {liveAgents.slice(0, 4).map((a, i) => (
               <div key={a.id} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface2 transition-colors">
                 <span className="text-xs text-gray-600 font-bold w-4">{i + 1}</span>
                 <Avatar initials={a.initials} color={a.color} status={a.status} />
