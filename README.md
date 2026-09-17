@@ -4,13 +4,20 @@ A modern, cloud-based contact center solution built with React, Vite, and Tailwi
 
 ## Features
 
-- **Call Center Dashboard** - Real-time metrics and recent calls overview
-- **Call History** - Searchable call logs with export functionality
-- **Messaging** - Integrated messaging interface
-- **Lead Management** - Manage and track leads with status updates
-- **Voicemail** - Voicemail management system
-- **Settings** - Configure integrations and agent management
-- **Floating Softphone** - Quick access phone dialer widget
+- **Call Center Dashboard** — KPI cards with sparklines & trends, hourly call-volume chart, SLA/CSAT rings, live agent leaderboard and recent-call feed
+- **Call History** — searchable, filterable (direction/status) call logs with pagination and working CSV export
+- **Lead Management** — pipeline funnel with a 5-stage Kanban board
+- **Messaging** — two-pane chat inbox with live-send demo thread
+- **Voicemail** — voicemail cards with auto-generated transcripts
+- **Settings** — integration toggles, agent management, notification & locale settings
+- **Floating Softphone** — glass-style dialer with keypad, mute/transfer controls
+
+## Design System
+
+- Dark "midnight navy" theme with indigo→cyan gradient accents
+- Inter typeface, custom card/pill/button components in `src/components/ui.jsx`
+- Shared demo dataset in `src/data/mock.js` so all pages stay consistent
+- CSS-only charts (sparklines, bar chart, progress rings) — no chart library needed
 
 ## Tech Stack
 

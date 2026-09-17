@@ -13,15 +13,15 @@ export default function Impressum() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-gray-900 rounded-lg p-6 border border-blue-500/20">
+        <div className="card p-6 border border-accent/30">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+            <div className="w-2 h-2 rounded-full bg-accent"></div>
             <h2 className="text-xl font-bold text-white">Anbieter</h2>
           </div>
           <div className="space-y-3 text-gray-300">
-            <p className="font-semibold text-lg text-blue-400">Dialing Innovations</p>
+            <p className="font-semibold text-lg text-accent-soft">Dialing Innovations</p>
             <div className="flex gap-3">
-              <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <MapPin className="w-5 h-5 text-accent-soft flex-shrink-0 mt-0.5" />
               <div>
                 <p>Berlin, Germany</p>
               </div>
@@ -29,7 +29,7 @@ export default function Impressum() {
           </div>
         </div>
 
-        <div className="bg-gray-900 rounded-lg p-6 border border-cyan-500/20">
+        <div className="card p-6 border border-cyan-500/20">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2 h-2 rounded-full bg-cyan-600"></div>
             <h2 className="text-xl font-bold text-white">Kontakt</h2>
@@ -47,12 +47,12 @@ export default function Impressum() {
         </div>
       </div>
 
-      <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+      <div className="card p-6 border border-line">
         <h2 className="text-xl font-bold text-white mb-4">Verantwortlich für den Inhalt</h2>
         <p className="text-gray-300 mb-4">
           Verantwortlich im Sinne des § 7 Abs. 1 TMG:
         </p>
-        <div className="bg-black rounded p-4 border border-gray-800">
+        <div className="bg-surface2 rounded p-4 border border-line">
           <p className="text-gray-200">Dialing Innovations</p>
           <p className="text-gray-200">Berlin, Germany</p>
           <p className="text-gray-200">
@@ -63,7 +63,7 @@ export default function Impressum() {
         </div>
       </div>
 
-      <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+      <div className="card p-6 border border-line">
         <div className="flex gap-3 mb-4">
           <AlertCircle className="w-6 h-6 text-yellow-500 flex-shrink-0" />
           <h2 className="text-xl font-bold text-white">Haftungsausschluss</h2>
@@ -81,7 +81,7 @@ export default function Impressum() {
         </div>
       </div>
 
-      <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+      <div className="card p-6 border border-line">
         <h2 className="text-xl font-bold text-white mb-4">Urheberrecht</h2>
         <div className="space-y-4 text-gray-300">
           <p>
@@ -93,7 +93,7 @@ export default function Impressum() {
         </div>
       </div>
 
-      <div className="text-gray-400 text-sm border-t border-gray-800 pt-6">
+      <div className="text-gray-400 text-sm border-t border-line pt-6">
         <p>Zuletzt aktualisiert: {new Date().getFullYear()}</p>
       </div>
     </div>

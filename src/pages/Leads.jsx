@@ -1,115 +1,83 @@
 import React from 'react'
-import { Plus, MoreHorizontal } from 'lucide-react'
+import { Users, Building2, MapPin, ArrowUpRight } from 'lucide-react'
+import { Section } from '../components/ui'
+import { leads } from '../data/mock'
+
+const stages = [
+  { id: 'new', label: 'New', color: '#6366f1' },
+  { id: 'contacted', label: 'Contacted', color: '#22d3ee' },
+  { id: 'qualified', label: 'Qualified', color: '#fbbf24' },
+  { id: 'won', label: 'Won', color: '#34d399' },
+  { id: 'lost', label: 'Lost', color: '#f87147' },
+]
+
+const pipeline = [
+  { label: 'New', count: 12, pct: 38, color: '#6366f1' },
+  { label: 'Contacted', count: 18, pct: 56, color: '#22d3ee' },
+  { label: 'Qualified', count: 9, pct: 28, color: '#fbbf24' },
+  { label: 'Won', count: 6, pct: 19, color: '#34d399' },
+]
 
 export default function Leads() {
-  const mockLeads = [
-    {
-      id: 1,
-      name: 'John Smith',
-      phone: '+1 (555) 123-4567',
-      email: 'john@example.com',
-      source: 'Web Form',
-      status: 'New',
-      created: '2024-01-15',
-    },
-    {
-      id: 2,
-      name: 'Sarah Johnson',
-      phone: '+1 (555) 234-5678',
-      email: 'sarah@example.com',
-      source: 'Phone Call',
-      status: 'Contacted',
-      created: '2024-01-14',
-    },
-    {
-      id: 3,
-      name: 'Michael Brown',
-      phone: '+1 (555) 345-6789',
-      email: 'michael@example.com',
-      source: 'Email',
-      status: 'Qualified',
-      created: '2024-01-13',
-    },
-    {
-      id: 4,
-      name: 'Emily Davis',
-      phone: '+1 (555) 456-7890',
-      email: 'emily@example.com',
-      source: 'Referral',
-      status: 'New',
-      created: '2024-01-12',
-    },
-    {
-      id: 5,
-      name: 'David Wilson',
-      phone: '+1 (555) 567-8901',
-      email: 'david@example.com',
-      source: 'Web Form',
-      status: 'Contacted',
-      created: '2024-01-11',
-    },
-  ]
-
-  const getStatusBadgeColor = (status) => {
-    switch (status) {
-      case 'New':
-        return 'bg-blue-500/20 text-blue-400'
-      case 'Contacted':
-        return 'bg-yellow-500/20 text-yellow-400'
-      case 'Qualified':
-        return 'bg-green-500/20 text-green-400'
-      default:
-        return 'bg-gray-500/20 text-gray-400'
-    }
-  }
-
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-white">Leads</h1>
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#f97316] hover:bg-orange-600 rounded-lg text-white font-medium transition-colors text-sm">
-          <Plus className="w-4 h-4" />
-          Add Lead
-        </button>
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-extrabold tracking-tight">Lead Management</h1>
+          <p className="text-sm text-gray-500 mt-0.5">45 active leads · €77.900 pipeline value</p>
+        </div>
+        <button className="btn-primary"><Users className="w-4 h-4" /> Add Lead</button>
       </div>
 
-      {/* Table */}
-      <div className="bg-[#111827] border border-[#1a2535] rounded-lg overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-[#0a1020] border-b border-[#1a2535]">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-300">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-300">Phone</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-300">Email</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-300">Source</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-300">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-300">Created</th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-300">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mockLeads.map((lead, idx) => (
-              <tr key={lead.id} className={idx !== mockLeads.length - 1 ? 'border-b border-[#1a2535]' : ''}>
-                <td className="px-6 py-4 text-sm text-white">{lead.name}</td>
-                <td className="px-6 py-4 text-sm text-gray-300">{lead.phone}</td>
-                <td className="px-6 py-4 text-sm text-gray-300">{lead.email}</td>
-                <td className="px-6 py-4 text-sm text-gray-300">{lead.source}</td>
-                <td className="px-6 py-4 text-sm">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadgeColor(lead.status)}`}>
-                    {lead.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-300">{lead.created}</td>
-                <td className="px-6 py-4 text-sm">
-                  <button className="p-1 hover:bg-[#1a2535] rounded transition-colors">
-                    <MoreHorizontal className="w-4 h-4 text-gray-400" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* Funnel */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {pipeline.map((s) => (
+          <div key={s.label} className="card card-hover p-5">
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-gray-400">{s.label}</p>
+              <span className="pill pill-muted">{s.count}</span>
+            </div>
+            <p className="text-2xl font-bold text-white mt-2">{s.pct}%</p>
+            <div className="h-1.5 bg-surface2 rounded-full mt-3 overflow-hidden">
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${s.pct}%`, background: s.color }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Kanban */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+        {stages.map((stage) => {
+          const items = leads.filter((l) => l.stage === stage.id)
+          return (
+            <div key={stage.id} className="flex flex-col gap-3">
+              <div className="flex items-center gap-2 px-1">
+                <span className="w-2 h-2 rounded-full" style={{ background: stage.color }} />
+                <p className="text-sm font-semibold text-white">{stage.label}</p>
+                <span className="text-xs text-gray-600 ml-auto">{items.length}</span>
+              </div>
+              <div className="space-y-3 min-h-[120px]">
+                {items.map((l) => (
+                  <div key={l.id} className="card card-hover p-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-semibold text-white">{l.name}</p>
+                      <span className="text-xs font-bold" style={{ color: stage.color }}>{l.value}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 flex items-center gap-1 mt-1.5"><Building2 className="w-3 h-3" /> {l.company}</p>
+                    <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5"><MapPin className="w-3 h-3" /> {l.city}</p>
+                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-line/60">
+                      <span className="pill pill-muted !px-2 !py-0.5 text-[10px]">{l.source}</span>
+                      <span className="text-[10px] text-gray-600">{l.touched}</span>
+                    </div>
+                  </div>
+                ))}
+                {items.length === 0 && (
+                  <div className="card border-dashed p-4 text-center text-xs text-gray-600">Empty</div>
+                )}
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

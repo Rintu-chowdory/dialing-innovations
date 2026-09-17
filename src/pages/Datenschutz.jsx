@@ -3,42 +3,42 @@ import { AlertCircle, Mail, Lock, Eye, Download, XCircle } from 'lucide-react'
 
 export default function Datenschutz() {
   return (
-    <div className="bg-black text-gray-300 min-h-screen py-12 px-6">
+    <div className="text-gray-300">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-12 border-b border-gray-800 pb-8">
+        <div className="mb-12 border-b border-line pb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Datenschutzerklärung</h1>
           <p className="text-gray-400">Dialing Innovations – VoIP/Call Center Datenschutzrichtlinien (DSGVO)</p>
           <p className="text-sm text-gray-500 mt-4">Stand: Juni 2026</p>
         </div>
 
-        <div className="bg-gray-900 border border-gray-800 rounded-lg p-4 mb-8 flex gap-3">
-          <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+        <div className="bg-surface2 border border-line rounded-xl p-4 mb-8 flex gap-3">
+          <AlertCircle className="w-5 h-5 text-accent-soft flex-shrink-0 mt-0.5" />
           <p className="text-sm text-gray-300">
             Diese Datenschutzerklärung beschreibt, wie Dialing Innovations Ihre Daten erhebt, verarbeitet und schützt.
           </p>
         </div>
 
         <div className="space-y-12">
-          <section className="border-l-4 border-blue-600 pl-6">
+          <section className="border-l-4 border-accent pl-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+              <div className="bg-accent text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</div>
               <h2 className="text-2xl font-bold text-white">Verantwortlicher</h2>
             </div>
-            <div className="bg-gray-900 rounded-lg p-6 space-y-3">
+            <div className="card p-6 space-y-3">
               <p className="font-semibold text-white">Dialing Innovations GmbH</p>
               <p>Kontakt:</p>
               <ul className="space-y-2 text-gray-400">
-                <li>Email: <span className="text-blue-400 font-mono">privacy@dialing-innovations.com</span></li>
+                <li>Email: <span className="text-accent-soft font-mono">privacy@dialing-innovations.com</span></li>
                 <li>Hauptsitz: Europäische Union</li>
               </ul>
             </div>
           </section>
-          <section className="border-l-4 border-blue-600 pl-6">
+          <section className="border-l-4 border-accent pl-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+              <div className="bg-accent text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</div>
               <h2 className="text-2xl font-bold text-white">Datenerhebung und -verarbeitunh</h2>
             </div>
-            <div className="bg-gray-900 rounded-lg p-6 space-y-4">
+            <div className="card p-6 space-y-4">
               <p className="text-gray-300">Als VoIP/Call-Center-Plattform verarbeiten wir:</p>
               <ul className="space-y-3 text-gray-400 list-disc list-inside">
                 <li><span className="font-semibold text-gray-300">Anrufdaten:</span> Telefonnummern, Anrufdauer, Zeitstempel, Aufzeichnungen, Transcript-Daten</li>
@@ -54,7 +54,7 @@ export default function Datenschutz() {
               <div className="bg-cyan-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</div>
               <h2 className="text-2xl font-bold text-white">Google OAuth Login</h2>
             </div>
-            <div className="bg-gray-900 rounded-lg p-6 space-y-4">
+            <div className="card p-6 space-y-4">
               <p className="text-gray-300">Dialing Innovations ermöglicht Google OAuth zur Authentifizierung.</p>
               <ul className="space-y-3 text-gray-400 list-disc list-inside">
                 <li>Wir erhalten: Email, Name, Profilbild-URL und eindeutige Google-Account-ID</li>
@@ -70,7 +70,7 @@ export default function Datenschutz() {
               <div className="bg-cyan-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">4</div>
               <h2 className="text-2xl font-bold text-white">KI-gestützte Call-Analyse und Transkription</h2>
             </div>
-            <div className="bg-gray-900 rounded-lg p-6 space-y-4">
+            <div className="card p-6 space-y-4">
               <p className="text-gray-300">Dialing Innovations nutzt KI-Modelle zur automatischen Call-Analyse:</p>
               <ul className="space-y-3 text-gray-400 list-disc list-inside">
                 <li>Anrufaufzeichnungen werden an KI-Services übermittelt für Transkription und Sentiment-Analyse</li>
@@ -86,7 +86,7 @@ export default function Datenschutz() {
               <div className="bg-green-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">5</div>
               <h2 className="text-2xl font-bold text-white">Ihre Datenschutzrechte</h2>
             </div>
-            <div className="bg-gray-900 rounded-lg p-6 space-y-4">
+            <div className="card p-6 space-y-4">
               <p className="text-gray-300">Gemäÿ DSGVO haben Sie folgende Rechte:</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
@@ -99,7 +99,7 @@ export default function Datenschutz() {
 
                 <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
                   <div className="flex items-start gap-2 mb-2">
-                    <Download className="v-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                    <Download className="v-5 h-5 text-accent-soft flex-shrink-0 mt-0.5" />
                     <h3 className="font-semibold text-white">Datenportabilität</h3>
                   </div>
                   <p className="text-sm text-gray-400">Exportieren Sie Ihre Daten in strukturiertem Format</p>
@@ -131,7 +131,7 @@ export default function Datenschutz() {
               <div className="bg-gray-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">6</div>
               <h2 className="text-2xl font-bold text-white">Anrufaufzeichnung und Compliance</h2>
             </div>
-            <div className="bg-gray-900 rounded-lg p-6 space-y-4">
+            <div className="card p-6 space-y-4">
               <p className="text-gray-300">Anrufaufzeichnungen werden für Qualitätssicherung und Compliance aufbewahrt:</p>
               <ul className="space-y-3 text-gray-400 list-disc list-inside">
                 <li>Aufzeichnungen erfordern korrekte Zustimmung aller Gesprächsteilnehmer</li>
@@ -147,7 +147,7 @@ export default function Datenschutz() {
               <div className="bg-orange-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">7</div>
               <h2 className="text-2xl font-bold text-white">Datenspeicherung und Aufbewahrung</h2>
             </div>
-            <div className="bg-gray-900 rounded-lg p-6 space-y-4">
+            <div className="card p-6 space-y-4">
               <p className="text-gray-300">Speicherdauer Ihrer Daten:</p>
               <ul className="space-y-3 text-gray-400 list-disc list-inside">
                 <li><span className="font-semibold text-gray-300">Account-Daten:</span> Während Abo aktiv + 60 Tage nach Kündigung</li>
@@ -163,7 +163,7 @@ export default function Datenschutz() {
               <div className="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">8</div>
               <h2 className="text-2xl font-bold text-white">Kontakt & Support</h2>
             </div>
-            <div className="bg-gray-900 rounded-lg p-6 space-y-4">
+            <div className="card p-6 space-y-4">
               <p className="text-gray-300">Fragen zu Ihren Daten oder Datenschutzanfragen:</p>
               <div className="flex items-center gap-2 text-gray-300 mt-4">
                 <Mail className="v-5 h-5 text-indigo-500" />
@@ -173,7 +173,7 @@ export default function Datenschutz() {
             </div>
           </section>
 
-          <div className="border-t border-gray-800 pt-8 mt-12">
+          <div className="border-t border-line pt-8 mt-12">
             <p className="text-gray-500 text-sm">
               © 2024-2026 Dialing Innovations. Diese Datenschutzerklärung kann aktualisiert werden. Die aktuelle Version gilt ab dem Veröffentlichungsdatum.
             </p>
