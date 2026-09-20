@@ -15,6 +15,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy import create_engine, String, Integer, Float
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
+import os
+import httpx
+
+JAMBONZ_API_URL = os.getenv("JAMBONZ_API_URL", "")
+JAMBONZ_API_KEY = os.getenv("JAMBONZ_API_KEY", "")
+JAMBONZ_FROM_NUMBER = os.getenv("JAMBONZ_FROM_NUMBER", "+49 000 000 0000")
 
 DB_URL = "sqlite:///./dialing.db"
 engine = create_engine(DB_URL, connect_args={"check_same_thread": False})
@@ -304,6 +310,42 @@ def send_message(thread_id: str, body: NewMessage):
         t.unread = 0
         s.commit()
         return {"id": m.id, "from": "me", "text": m.text, "time": m.time}
+
+
+class DialRequest(BaseModel):
+    to: str
+    agent: str = "You"
+
+
+@app.post("/api/calls/dial")
+def dial(body: DialRequest):
+    now = datetime.now()
+    status = "ringing"
+    note = "demo mode - no telephony provider configured"
+
+    if JAMBONZ_API_URL and JAMBONZ_API_KEY:
+        try:
+            r = httpx.post(
+                f"{JAMBONZ_API_URL}/v1/Accounts/self/Calls",
+                headers={"Authorization": f"Bearer {JAMBONZ_API_KEY}"},
+                json={"from": JAMBONZ_FROM_NUMBER, "to": {"type": "phone", "number": body.to}},
+                timeout=10,
+            )
+            r.raise_for_status()
+            note = "dialed via jambonz"
+        except Exception as e:
+            status = "failed"
+            note = f"jambonz error: {e}"
+
+    with Session(engine) as s:
+        c = Call(
+            time=now.strftime("%H:%M"), from_number=JAMBONZ_FROM_NUMBER, to=body.to,
+            duration="-", direction="out", status=status, agent=body.agent,
+        )
+        s.add(c)
+        s.commit()
+        s.refresh(c)
+        return {"id": c.id, "status": status, "note": note, "to": body.to}
 
 
 @app.get("/api/voicemails")
