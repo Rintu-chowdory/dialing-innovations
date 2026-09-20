@@ -25,3 +25,7 @@ dist-ssr
 .env
 backend/dialing.db
 backend/__pycache__/
+.env
+__pycache__/
+*.pyc
+node_modules/

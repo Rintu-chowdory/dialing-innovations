@@ -17,10 +17,15 @@ from sqlalchemy import create_engine, String, Integer, Float
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 import os
 import httpx
+from dotenv import load_dotenv
+
+load_dotenv()
 
 JAMBONZ_API_URL = os.getenv("JAMBONZ_API_URL", "")
 JAMBONZ_API_KEY = os.getenv("JAMBONZ_API_KEY", "")
 JAMBONZ_FROM_NUMBER = os.getenv("JAMBONZ_FROM_NUMBER", "+49 000 000 0000")
+JAMBONZ_ACCOUNT_SID = os.getenv("JAMBONZ_ACCOUNT_SID", "")
+JAMBONZ_APPLICATION_SID = os.getenv("JAMBONZ_APPLICATION_SID", "")
 
 DB_URL = "sqlite:///./dialing.db"
 engine = create_engine(DB_URL, connect_args={"check_same_thread": False})
@@ -323,19 +328,28 @@ def dial(body: DialRequest):
     status = "ringing"
     note = "demo mode - no telephony provider configured"
 
-    if JAMBONZ_API_URL and JAMBONZ_API_KEY:
+    if JAMBONZ_API_URL and JAMBONZ_API_KEY and JAMBONZ_ACCOUNT_SID and JAMBONZ_APPLICATION_SID:
         try:
             r = httpx.post(
-                f"{JAMBONZ_API_URL}/v1/Accounts/self/Calls",
+                f"{JAMBONZ_API_URL}/v1/Accounts/{JAMBONZ_ACCOUNT_SID}/Calls",
                 headers={"Authorization": f"Bearer {JAMBONZ_API_KEY}"},
-                json={"from": JAMBONZ_FROM_NUMBER, "to": {"type": "phone", "number": body.to}},
+                json={
+                    "from": JAMBONZ_FROM_NUMBER,
+                    "to": {"type": "phone", "number": body.to},
+                    "application_sid": JAMBONZ_APPLICATION_SID,
+                },
                 timeout=10,
             )
             r.raise_for_status()
             note = "dialed via jambonz"
         except Exception as e:
             status = "failed"
-            note = f"jambonz error: {e}"
+            note = f"jambonz error: {e} | response: {getattr(e, "response", None) and e.response.text}"
+    elif not (JAMBONZ_API_URL and JAMBONZ_API_KEY):
+        pass
+    else:
+        status = "failed"
+        note = "missing JAMBONZ_ACCOUNT_SID or JAMBONZ_APPLICATION_SID in .env"
 
     with Session(engine) as s:
         c = Call(
